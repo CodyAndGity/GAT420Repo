@@ -109,7 +109,6 @@ int main()
 		DrawText("Space: Randomizer", 40, 20, 20, WHITE);
 		DrawFPS(40, 40);
 
-
 		// end the frame and get ready for the next one  (display frame, poll input, etc...)
 		EndDrawing();
 	}

@@ -84,7 +84,11 @@ int main()
 	Cells nextGeneration(gridWidth * gridHeight);
 
 	RandomizeCells(currentGeneration);
-	
+	//WriteCell(40, 39, true, currentGeneration);
+	//WriteCell(41, 39, true, currentGeneration);
+	//WriteCell(42, 39, true, currentGeneration);
+
+
 	// game loop
 	while (!WindowShouldClose())		// run the loop until the user presses ESCAPE or presses the Close button on the window
 	{
@@ -100,7 +104,7 @@ int main()
 		for (int y = 0; y < gridHeight; y++) {
 			for (int x = 0; x < gridWidth; x++) {
 				if (ReadCell(x, y, currentGeneration)) {
-					DrawRectangle((int)(x * cellWidth),(int)(y * cellHeight), cellWidth, cellHeight, WHITE);
+					DrawRectangle((int)(x * cellWidth), (int)(y * cellHeight), cellWidth, cellHeight, WHITE);
 				}
 
 			}
@@ -109,8 +113,37 @@ int main()
 		DrawText("Space: Randomizer", 40, 20, 20, WHITE);
 		DrawFPS(40, 40);
 
+
+		
+
+
+
+
 		// end the frame and get ready for the next one  (display frame, poll input, etc...)
 		EndDrawing();
+		for (int y = 0; y < gridHeight; y++) {
+			for (int x = 0; x < gridWidth; x++) {
+				int neighbors = CountLiveNeighbors(x, y, currentGeneration);
+				bool isAlive = ReadCell(x, y, currentGeneration);
+
+				if (isAlive) {
+					if (neighbors < 2) {
+						WriteCell(x, y, false, nextGeneration);
+					}
+					else if (neighbors == 2 || neighbors == 3) {
+						WriteCell(x, y, true, nextGeneration);
+					}
+					else if (neighbors > 3) {
+						WriteCell(x, y, false, nextGeneration);
+					}
+				}
+				else if (neighbors == 3) {
+					WriteCell(x, y, true, nextGeneration);
+				}
+
+			}
+		}
+		currentGeneration = nextGeneration;
 	}
 
 	// cleanup
